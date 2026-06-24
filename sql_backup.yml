@@ -1,0 +1,13 @@
+---
+- hosts: web
+  become: yes
+
+  tasks:
+    - name: Sync SQL backup files to EC2
+      ansible.posix.synchronize:
+        src: /var/lib/jenkins/workspace/database/
+        dest: /home/ubuntu/sql/
+        delete: no
+        rsync_opts:
+          - "--include=*.sql"
+          - "--exclude=*"
