@@ -14,7 +14,7 @@ pipeline {
                 chmod 600 vault_pass.txt
 
                 ansible-playbook \
-                  -i host.ini.bkp, \
+                  -i host.ini.bkp \
                   db_backup.yml \
                   --vault-password-file vault_pass.txt
 
