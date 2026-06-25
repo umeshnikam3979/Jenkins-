@@ -1,7 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        VAULT_PASS = credentials('vault-password')
+    }
+
     stages {
+
         stage('Clone Code') {
             steps {
                 git branch: 'main',
@@ -12,11 +17,21 @@ pipeline {
 
         stage('Database Backup') {
             steps {
-                sh 'ansible-playbook -i localhost, db_backup.yml --vault-password-file /var/lib/jenkins/.vault_pass'
+                sh '''
+                echo "$VAULT_PASS" > vault_pass.txt
+                chmod 600 vault_pass.txt
+
+                ansible-playbook \
+                  -i localhost, \
+                  db_backup.yml \
+                  --vault-password-file vault_pass.txt
+
+                rm -f vault_pass.txt
+                '''
             }
         }
 
-        stage('Copy Backup to EC2') {
+        stage('Copy Backup') {
             steps {
                 sh 'ansible-playbook -i host.ini.bkp sql_backup.yml'
             }
