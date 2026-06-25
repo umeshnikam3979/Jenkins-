@@ -4,17 +4,7 @@ pipeline {
     environment {
         VAULT_PASS = credentials('vault-password')
     }
-
-    stages {
-
-        stage('Clone Code') {
-            steps {
-                git branch: 'main',
-                    credentialsId: 'github-cred',
-                    url: 'https://github.com/umeshnikam3979/Jenkins-.git'
-            }
-        }
-
+    stages{
         stage('Database Backup') {
             steps {
                 sh '''
