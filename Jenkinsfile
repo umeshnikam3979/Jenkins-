@@ -2,23 +2,21 @@ pipeline {
     agent any
 
     stages {
-
         stage('Clone Code') {
             steps {
                 git branch: 'main',
-                credentialsId: 'github-cred',
-                url: 'https://github.com/umeshnikam3979/Jenkins-.git'
+                    credentialsId: 'github-cred',
+                    url: 'https://github.com/umeshnikam3979/Jenkins-.git'
             }
         }
 
-        stage('Run Shell Script') {
+        stage('Database Backup') {
             steps {
-                sh 'chmod +x backup.sh'
-                sh './backup.sh'
+                sh 'ansible-playbook -i localhost, db_backup.yml --vault-password-file /var/lib/jenkins/.vault_pass'
             }
         }
 
-        stage('Run Ansible Playbook') {
+        stage('Copy Backup to EC2') {
             steps {
                 sh 'ansible-playbook -i host.ini.bkp sql_backup.yml'
             }
