@@ -22,11 +22,5 @@ pipeline {
                 '''
             }
         }
-
-        stage('Copy Backup') {
-            steps {
-                sh 'ansible-playbook -i host.ini.bkp sql_backup.yml'
-            }
-        }
     }
 }
