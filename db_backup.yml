@@ -20,12 +20,6 @@
   become: yes
 
   tasks:
-    - name: Create destination directory
-      file:
-        path: /home/ubuntu/sql
-        state: directory
-        mode: '0755'
-
     - name: Sync SQL backup files to EC2
       ansible.posix.synchronize:
         src: /var/lib/jenkins/workspace/database/
