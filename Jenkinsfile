@@ -4,7 +4,9 @@ pipeline {
     environment {
         VAULT_PASS = credentials('vault-password')
     }
-    stages{
+
+    stages {
+
         stage('Database Backup') {
             steps {
                 sh '''
