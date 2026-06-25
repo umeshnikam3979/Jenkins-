@@ -1,3 +1,6 @@
+[localhost]
+localhost ansible_connection=local
+
 [web]
 13.55.162.32
 
